@@ -29,5 +29,11 @@ public class ProductCategory {
 
     private Date updateTime;
 
+    public ProductCategory() {
+    }
 
+    public ProductCategory(String categoryName, Integer categoryType) {
+        this.categoryName = categoryName;
+        this.categoryType = categoryType;
+    }
 }

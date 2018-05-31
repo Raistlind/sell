@@ -1,11 +1,18 @@
 package cn.krynn.sell.repository;
 
 import cn.krynn.sell.dataobject.ProductCategory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,11 +29,20 @@ public class ProductCategoryRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void saveTest() {
-        ProductCategory productCategory = new ProductCategory();
-        productCategory.setCategoryId(3);
-        productCategory.setCategoryName("男生最爱");
-        productCategory.setCategoryType(4);
-        repository.save(productCategory);
+        ProductCategory productCategory = new ProductCategory("不知名最爱",8);
+        ProductCategory result = repository.save(productCategory);
+        Assert.assertNotNull(result);
+        Assert.assertNotEquals(null, result);
+
+    }
+
+    @Test
+    public void findByCategoryTypeIn() {
+        List<Integer> list = Arrays.asList(4,5);
+
+        List<ProductCategory> result = repository.findByCategoryTypeIn(list);
+        Assert.assertNotEquals(0, result.size());
     }
 }
