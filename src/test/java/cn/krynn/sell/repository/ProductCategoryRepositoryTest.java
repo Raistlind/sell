@@ -1,6 +1,7 @@
 package cn.krynn.sell.repository;
 
 import cn.krynn.sell.dataobject.ProductCategory;
+import cn.krynn.sell.service.impl.CategoryServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,10 +20,19 @@ public class ProductCategoryRepositoryTest {
     @Autowired
     private ProductCategoryRepository repository;
 
+    @Autowired
+    private CategoryServiceImpl categoryService;
+
     @Test
     public void findOneTest() {
         ProductCategory productCategory = repository.findOne(1);
         System.out.println(productCategory.toString());
+
+        if (categoryService == null) {
+            System.out.println("================ categoryService is NULL ===============");
+        } else {
+            System.out.println("**************** categoryService is NOT NULL ***************");
+        }
     }
 
     @Test

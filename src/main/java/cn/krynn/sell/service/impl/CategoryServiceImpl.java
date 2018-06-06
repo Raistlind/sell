@@ -11,8 +11,12 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
     private ProductCategoryRepository repository;
+
+    @Autowired
+    public CategoryServiceImpl(ProductCategoryRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public ProductCategory findOne(Integer categoryId) {
@@ -33,4 +37,6 @@ public class CategoryServiceImpl implements CategoryService {
     public ProductCategory save(ProductCategory productCategory) {
         return repository.save(productCategory);
     }
+
+
 }
