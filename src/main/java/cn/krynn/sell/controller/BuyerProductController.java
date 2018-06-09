@@ -7,6 +7,7 @@ import cn.krynn.sell.dataobject.ProductCategory;
 import cn.krynn.sell.dataobject.ProductInfo;
 import cn.krynn.sell.service.CategoryService;
 import cn.krynn.sell.service.ProductService;
+import cn.krynn.sell.utils.ResultVOUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,12 +67,6 @@ public class BuyerProductController {
             productVOList.add(productVO);
         }
 
-        ResultVO resultVO = new ResultVO();
-
-        resultVO.setData(productVOList);
-        resultVO.setCode(0);
-        resultVO.setMsg("成功");
-
-        return resultVO;
+        return ResultVOUtil.success(productVOList);
     }
 }
