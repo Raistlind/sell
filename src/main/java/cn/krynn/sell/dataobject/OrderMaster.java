@@ -28,7 +28,7 @@ public class OrderMaster {
 
     private String buyerAddress;
 
-    private String buyerOpened;
+    private String buyerOpenid;
 
     private BigDecimal orderAmount;
 
