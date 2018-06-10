@@ -1,0 +1,28 @@
+package cn.krynn.sell.enums;
+
+/**
+ * Created by RaistlinD
+ * 2018/6/10 下午10:35
+ */
+public enum ResultEnum {
+
+    PRODUCT_NOT_EXIST(10, "商品不存在"),
+    ;
+
+    private Integer code;
+
+    private String message;
+
+    ResultEnum(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
