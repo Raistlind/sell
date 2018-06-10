@@ -1,11 +1,10 @@
-package cn.krynn.sell.dataobject;
+package cn.krynn.sell.dto;
 
+import cn.krynn.sell.dataobject.OrderDetail;
 import cn.krynn.sell.enums.OrderStatusEnum;
 import cn.krynn.sell.enums.PayStatusEnum;
 import lombok.Data;
-import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -13,14 +12,11 @@ import java.util.List;
 
 /**
  * Created by RaistlinD
- * 2018/6/9 下午9:50
+ * 2018/6/10 下午9:47
  */
-@Entity
 @Data
-@DynamicUpdate
-public class OrderMaster {
+public class OrderDTO {
 
-    @Id
     private String orderId;
 
     private String buyerName;
@@ -33,11 +29,13 @@ public class OrderMaster {
 
     private BigDecimal orderAmount;
 
-    private Integer orderStatus = OrderStatusEnum.NEW.getCode();
+    private Integer orderStatus;
 
-    private Integer payStatus = PayStatusEnum.WAIT.getCode();
+    private Integer payStatus;
 
     private Date createTime;
 
     private Date updateTime;
+
+    List<OrderDetail> orderDetailList;
 }
