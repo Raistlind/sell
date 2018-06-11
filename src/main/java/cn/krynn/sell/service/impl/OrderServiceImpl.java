@@ -3,7 +3,10 @@ package cn.krynn.sell.service.impl;
 import cn.krynn.sell.dataobject.OrderDetail;
 import cn.krynn.sell.dataobject.OrderMaster;
 import cn.krynn.sell.dataobject.ProductInfo;
+import cn.krynn.sell.dto.CartDTO;
 import cn.krynn.sell.dto.OrderDTO;
+import cn.krynn.sell.enums.OrderStatusEnum;
+import cn.krynn.sell.enums.PayStatusEnum;
 import cn.krynn.sell.enums.ResultEnum;
 import cn.krynn.sell.exception.SellException;
 import cn.krynn.sell.repository.OrderDetailRepository;
@@ -16,9 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by RaistlinD
@@ -37,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderMasterRepository orderMasterRepository;
 
     @Override
+    @Transactional
     public OrderDTO create(OrderDTO orderDTO) {
 
         String orderId = KeyUtil.genUniqueKey();
@@ -50,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
             }
 
             //2.计算订单总价
-            orderAmount = orderDetail.getProductPrice()
+            orderAmount = productInfo.getProductPrice()
                     .multiply(new BigDecimal(orderDetail.getProductQuantity()))
                     .add(orderAmount);
 
@@ -63,14 +70,19 @@ public class OrderServiceImpl implements OrderService {
 
         //3.写入订单数据库OrderMaster和OrderDetail
         OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDTO, orderMaster);
         orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAmount);
-        BeanUtils.copyProperties(orderDTO, orderMaster);
-
+        orderMaster.setOrderStatus(OrderStatusEnum.NEW.getCode());
+        orderMaster.setPayStatus(PayStatusEnum.WAIT.getCode());
         orderMasterRepository.save(orderMaster);
 
         //4.查询库存和扣库存
-        return null;
+        List<CartDTO> cartDTOList = orderDTO.getOrderDetailList().stream().map(e ->
+                new CartDTO(e.getProductId(), e.getProductQuantity())).collect(Collectors.toList());
+        productService.decreaseStock(cartDTOList);
+
+        return orderDTO;
     }
 
     @Override

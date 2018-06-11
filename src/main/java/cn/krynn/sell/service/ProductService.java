@@ -1,6 +1,7 @@
 package cn.krynn.sell.service;
 
 import cn.krynn.sell.dataobject.ProductInfo;
+import cn.krynn.sell.dto.CartDTO;
 import org.springframework.data.domain.Page;
 
 import java.awt.print.Pageable;
@@ -19,5 +20,9 @@ public interface ProductService {
     Page<ProductInfo> findAll(org.springframework.data.domain.Pageable pageable);
 
     ProductInfo save(ProductInfo productInfo);
+
+    void increaseStock(List<CartDTO> cartDTOList);
+
+    void decreaseStock(List<CartDTO> cartDTOList);
 
 }
