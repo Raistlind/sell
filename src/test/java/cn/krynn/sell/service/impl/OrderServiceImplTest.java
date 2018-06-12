@@ -1,13 +1,17 @@
 package cn.krynn.sell.service.impl;
 
 import cn.krynn.sell.dataobject.OrderDetail;
+import cn.krynn.sell.dataobject.OrderMaster;
 import cn.krynn.sell.dto.OrderDTO;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -28,6 +32,8 @@ public class OrderServiceImplTest {
     private OrderServiceImpl orderService;
 
     private final String BUYER_OPENID = "110110";
+
+    private  final String ORDER_ID = "123456";
 
     @Test
     public void create() {
@@ -54,10 +60,18 @@ public class OrderServiceImplTest {
 
     @Test
     public void findOne() {
+
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        log.info("【查询单个订单】 result={}", orderDTO.getOrderId());
+        Assert.assertEquals(ORDER_ID, orderDTO.getOrderId());
     }
 
     @Test
     public void findList() {
+
+        PageRequest request = new PageRequest(0, 2);
+        Page<OrderDTO> orderDTOPage = orderService.findList(BUYER_OPENID, request);
+        Assert.assertNotEquals(0, orderDTOPage.getTotalElements());
     }
 
     @Test
