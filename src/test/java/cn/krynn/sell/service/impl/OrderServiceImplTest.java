@@ -3,6 +3,8 @@ package cn.krynn.sell.service.impl;
 import cn.krynn.sell.dataobject.OrderDetail;
 import cn.krynn.sell.dataobject.OrderMaster;
 import cn.krynn.sell.dto.OrderDTO;
+import cn.krynn.sell.enums.OrderStatusEnum;
+import cn.krynn.sell.enums.PayStatusEnum;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -33,7 +35,7 @@ public class OrderServiceImplTest {
 
     private final String BUYER_OPENID = "110110";
 
-    private  final String ORDER_ID = "123456";
+    private final String ORDER_ID = "123456";
 
     @Test
     public void create() {
@@ -76,13 +78,22 @@ public class OrderServiceImplTest {
 
     @Test
     public void cancel() {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.cancel(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.CANCEL.getCode(), result.getOrderStatus());
     }
 
     @Test
     public void finish() {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.finish(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.FINISHED.getCode(), result.getOrderStatus());
     }
 
     @Test
     public void paid() {
+        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
+        OrderDTO result = orderService.paid(orderDTO);
+        Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(), result.getPayStatus());
     }
 }
