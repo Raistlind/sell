@@ -45,5 +45,5 @@ public class OrderDTO {
     private Date updateTime;
 
 
-    List<OrderDetail> orderDetailList = new ArrayList<>();
+    List<OrderDetail> orderDetailList;// = new ArrayList<>();
 }
